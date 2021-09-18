@@ -7,6 +7,12 @@ class Tag(models.Model):
     slug = models.SlugField('Slug')
 
 
+class Ingredient(models.Model):
+    title = models.CharField('Название', max_length=70)
+    quantity = models.PositiveIntegerField('Количество')
+    units_measurement = models.CharField('Единицы измерения', max_length=10)
+
+
 class Recipe(models.Model):
     author = models.CharField('Автор публикации (пользователь)', max_length=70)
     title = models.CharField('Название', max_length=70)
