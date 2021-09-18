@@ -18,7 +18,7 @@ class Recipe(models.Model):
     title = models.CharField('Название', max_length=70)
     image = models.ImageField('Картинка')
     description = models.TextField('Текстовое описание')
-    ingredients = models.CharField('Ингредиенты', max_length=70)
+    ingredients = models.ManyToManyFiel(Ingredient, verbose_name='Ингредиенты')
     tag = models.ManyToManyField(Tag, verbose_name="Тег")
     cooking_time_min = models.PositiveIntegerField(
         'Время приготовления в минутах'
