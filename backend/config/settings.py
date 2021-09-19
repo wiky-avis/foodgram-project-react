@@ -129,3 +129,12 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 EMAIL_ADMIN = env.str('EMAIL_ADMIN')
+
+GUEST = 'guest'
+USER = 'user'
+ADMINISTRATOR = 'administrator'
+ROLES = [
+    (ADMINISTRATOR, 'Администратор'),
+    (USER, 'Авторизованный пользователь'),
+    (GUEST, 'Неавторизованный пользователь'),
+]

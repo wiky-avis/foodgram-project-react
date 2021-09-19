@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class Tag(models.Model):
-    title = models.CharField('Название', max_length=50, db_index=True)
+    title = models.CharField('Название', max_length=50)
     hexcolor = models.CharField(
         'Цветовой HEX-код', max_length=7, default="#49B64E"
     )
@@ -35,7 +35,7 @@ class Recipe(models.Model):
     image = models.ImageField('Картинка', upload_to='recipe/')
     description = models.TextField('Описание')
     ingredients = models.ManyToManyField(
-        Ingredient, verbose_name='Ингредиенты', blank=True
+        Ingredient, verbose_name='Ингредиенты'
     )
     tag = models.ManyToManyField(
         Tag, related_name='recipe_tag', blank=True, verbose_name='Тег'
