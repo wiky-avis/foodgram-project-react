@@ -1,25 +1,27 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .managers import CustomUserManager
+from config import settings
 
 
-class User(AbstractUser):
-    username = models.CharField(
-        'Юзернейм',
-        max_length=150,
-        unique=True,)
+class CustomUser(AbstractUser):
     email = models.EmailField(
         'Адрес электронной почты',
-        max_length=254,
         unique=True,)
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        verbose_name='Юзернейм')
     first_name = models.CharField('Имя', max_length=150)
     last_name = models.CharField('Фамилия', max_length=150)
-    password = models.CharField('Пароль', max_length=150)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-    class Meta(AbstractUser.Meta):
-        ordering = ['username']
+    objects = CustomUserManager()
+
+    class Meta:
+        ordering = ['-id']
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -27,24 +29,25 @@ class User(AbstractUser):
         return self.username
 
 
-class Subscription(models.Model):
+class Follow(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='follower',
-        verbose_name='Подписчик',)
+        related_name="follower",
+        verbose_name='Подписчик'
+    )
     author = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='following',
-        verbose_name='Автор',)
+        related_name="following",
+        verbose_name='Автор'
+    )
 
     class Meta:
-        verbose_name = 'Подписка'
+        ordering = ['id']
+        verbose_name = 'Подписка',
         verbose_name_plural = 'Подписки'
-        ordering = ['-id']
-        constraints = [models.UniqueConstraint(
-            fields=['user', 'author'], name='unique_follow')]
 
     def __str__(self):
-        return f'Пользователь {self.user} подписан на {self.author}'
+        return f'{self.user.username} '\
+               f'подписался на {self.author.username}'

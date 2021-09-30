@@ -1,22 +1,39 @@
-from django.conf.urls import include
-from django.urls import path
-from rest_framework import routers
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from .views import (DownloadShoppingCart, FavoriteAPIView, IngredientViewSet,
-                    RecipeViewSet, ShoppingListAPIView, TagViewSet)
+from .views import (FavoriteViewSet, IngredientViewSet, RecipeViewSet,
+                    ShoppingCartViewSet, SubscribeListViewSet,
+                    SubscribeView, TagViewSet, UsersViewSet)
 
-router = routers.DefaultRouter()
-router.register(r'recipes', RecipeViewSet, basename='recipes')
-router.register(r'ingredients', IngredientViewSet, basename='ingredients')
-router.register(r'tags', TagViewSet, basename='tags')
+v1_router = DefaultRouter()
+v1_router.register('users', UsersViewSet)
+v1_router.register('recipes', RecipeViewSet, basename='recipes')
+v1_router.register('ingredients', IngredientViewSet, basename='ingredients')
+v1_router.register('tags', TagViewSet, basename='tag')
 
 
 urlpatterns = [
-    path('recipes/download_shopping_cart/', DownloadShoppingCart.as_view(),
-         name='download_shopping_cart'),
-    path('', include(router.urls)),
-    path('recipes/<int:recipe_id>/shopping_cart/', ShoppingListAPIView.as_view(),
-         name='add_recipe_to_shopping_cart'),
-    path('recipes/<int:recipe_id>/favorite/', FavoriteAPIView.as_view(),
-         name='add_recipe_to_favorite'),
+    path(
+        'users/subscriptions/',
+        SubscribeListViewSet.as_view({'get': 'list'}),
+        name='subscriptions'
+        ),
+    path('', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    path(
+        'recipes/<int:recipe_id>/shopping_cart/',
+        ShoppingCartViewSet.as_view(),
+        name='shopping_cart'
+        ),
+    path(
+        'recipes/<int:recipe_id>/favorite/',
+        FavoriteViewSet.as_view(),
+        name='favorite'
+        ),
+    path(
+        'users/<int:user_id>/subscribe/',
+        SubscribeView.as_view(),
+        name='follow'
+        ),
+    path('', include(v1_router.urls)),
 ]

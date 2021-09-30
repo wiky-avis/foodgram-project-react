@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from environ import Env
@@ -23,14 +24,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_filters',
-    'djoser',
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
+    'drf_extra_fields',
     'corsheaders',
-    'import_export',
 
     'users',
     'api',
+    'recipes',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +65,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -119,18 +121,39 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
+        'django_filters.rest_framework.DjangoFilterBackend',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 6
+    'PAGE_SIZE': 9
 }
 
-RECIPES_LIMIT = 3
-DEFAULT_FROM_EMAIL = 'test@foodgram.ru'
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'REQUIRED_FIELDS': 'users.CustomUser.REQUIRED_FIELDS',
+    'HIDE_USERS': False,
+    'PERMISSIONS': {
+        'user': [
+            'djoser.permissions.CurrentUserOrAdminOrReadOnly'
+        ],
+        'user_list': [
+            'rest_framework.permissions.AllowAny'
+        ],
+    },
+}
+
+FIXTURE_DIRS = os.path.join(BASE_DIR, "data")
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
