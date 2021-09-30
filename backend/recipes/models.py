@@ -1,6 +1,7 @@
-from django.db import models
-from users.models import CustomUser
 from django.core.validators import MinValueValidator
+from django.db import models
+
+from users.models import CustomUser
 
 
 class Ingredient(models.Model):
