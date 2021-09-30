@@ -1,10 +1,11 @@
 from django.contrib import admin
+
+from .models import Ingredient, RecipeIngredient, Recipe, Tag
+from users.models import Subscription
 from django.utils.html import format_html
 
-from . import models
 
-
-@admin.register(models.Tag)
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'color')
     search_fields = ('name', 'slug')
@@ -14,24 +15,24 @@ class TagAdmin(admin.ModelAdmin):
 
 
 class RecipeIngredientInLine(admin.TabularInline):
-    model = models.RecipeIngredient
+    model = RecipeIngredient
 
 
-@admin.register(models.Ingredient)
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'measurement_unit')
     search_fields = ('name',)
     list_filter = ('name',)
 
 
-@admin.register(models.Subscription)
+@admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'author')
     search_fields = ('user', 'author')
     list_filter = ('user', 'author')
 
 
-@admin.register(models.Recipe)
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('author', 'name', 'image_tag')
     search_fields = ('user', 'author')

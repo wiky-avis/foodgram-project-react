@@ -1,8 +1,8 @@
 up:
-    docker-compose -f ../infra/docker-compose.yaml up -d
+    docker-compose up -d
 
 build:
-    docker-compose -f ../infra/docker-compose.yaml up -d --build
+    docker-compose up -d --build
 
 isort:
     isort .

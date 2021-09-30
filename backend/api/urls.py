@@ -1,15 +1,29 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.conf.urls import include
+from django.urls import path
+from rest_framework import routers
 
-from .views import IngredientViewSet, RecipeViewSet, TagViewSet
 
-router = DefaultRouter()
+from .views import (
+    RecipeViewSet,
+    IngredientViewSet,
+    TagViewSet,
+    FavoriteAPIView,
+    ShoppingListAPIView,
+    DownloadShoppingCart)
 
-router.register('tags', TagViewSet, basename='tags')
-router.register('recipes', RecipeViewSet, basename='recipes')
-router.register('ingredients', IngredientViewSet, basename='ingredients')
+
+router = routers.DefaultRouter()
+router.register(r'recipes', RecipeViewSet, basename='recipes')
+router.register(r'ingredients', IngredientViewSet, basename='ingredients')
+router.register(r'tags', TagViewSet, basename='tags')
 
 
 urlpatterns = [
+    path('recipes/download_shopping_cart/', DownloadShoppingCart.as_view(),
+         name='download_shopping_cart'),
     path('', include(router.urls)),
+    path('recipes/<int:recipe_id>/shopping_cart/', ShoppingListAPIView.as_view(),
+         name='add_recipe_to_shopping_cart'),
+    path('recipes/<int:recipe_id>/favorite/', FavoriteAPIView.as_view(),
+         name='add_recipe_to_favorite'),
 ]
