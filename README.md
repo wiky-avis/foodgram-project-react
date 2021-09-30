@@ -25,6 +25,7 @@ Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser
   `docker-compose up -d`
 
 Создайте и применените миграции базы данных:
+
   `docker-compose exec backend python manage.py makemigrations`
 
   `docker-compose exec web python manage.py migrate --noinput`
