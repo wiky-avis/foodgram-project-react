@@ -173,7 +173,9 @@ class ShoppingCartViewSet(views.APIView):
         item = get_object_or_404(Recipe, pk=recipe_id)
         follow = get_object_or_404(ShoppingCart, item=item, owner=user)
         follow.delete()
-        return Response('Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            'Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT
+        )
 
 
 class FavoriteViewSet(views.APIView):
@@ -206,7 +208,9 @@ class FavoriteViewSet(views.APIView):
             fav_user=fav_user
             )
         follow.delete()
-        return Response('Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            'Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT
+        )
 
 
 class SubscribeView(views.APIView):
@@ -233,7 +237,9 @@ class SubscribeView(views.APIView):
         author = get_object_or_404(CustomUser, id=user_id)
         follow = get_object_or_404(Follow, user=user, author=author)
         follow.delete()
-        return Response('Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            'Удаление прошло успешно!', status=status.HTTP_204_NO_CONTENT
+        )
 
 
 class SubscribeListViewSet(viewsets.ModelViewSet, PageNumberPagination):
