@@ -1,8 +1,8 @@
 from django.contrib import admin
-
-from .models import Ingredient, RecipeIngredient, Recipe, Tag
-from users.models import Subscription
 from django.utils.html import format_html
+from users.models import Subscription
+
+from .models import Ingredient, Recipe, RecipeIngredient, Tag
 
 
 @admin.register(Tag)

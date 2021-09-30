@@ -12,13 +12,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .filters import IngredientSearchFilter, RecipeFilter
-from .models import (Favorite, Ingredient, RecipeIngredient, ShoppingList, Recipe,
-                     Tag)
+from .models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                     ShoppingList, Tag)
 from .paginations import PageNumberPaginator
 from .permissions import AdminOrAuthorOrReadOnly
 from .serializers import (AddFavouriteRecipeSerializer, IngredientSerializer,
-                          ShoppingListSerializer, RecipeCreateSerializer,
-                          RecipeSerializer, TagSerializer)
+                          RecipeCreateSerializer, RecipeSerializer,
+                          ShoppingListSerializer, TagSerializer)
 
 User = get_user_model()
 
