@@ -1,6 +1,6 @@
 # Foodgram
 
-![example workflow](https://github.com/wiky-avis/foodgram-project-react/actions/workflows/foodgram.yml/badge.svg)
+![example workflow](https://github.com/wiky-avis/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
 ## Стек: 
 Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser.
