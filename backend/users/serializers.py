@@ -1,15 +1,17 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
-from .models import CustomUser, Subscription
+from .models import Subscription
 from api.models import Recipe
 from config import settings
 
+User = get_user_model()
 
 class CustomUserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = (
             'id',
             'email',
