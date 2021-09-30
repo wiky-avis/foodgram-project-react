@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import CustomUser, Subscription
 from api.models import Recipe
 from config import settings
-from api.serializers import RecipeAddSerializer
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -49,6 +48,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         ).exists()
 
     def get_recipes(self, obj):
+        from api.serializers import RecipeAddSerializer
         request = self.context.get('request')
         recipes = Recipe.objects.filter(
             author=obj.author)[:settings.RECIPES_LIMIT]
