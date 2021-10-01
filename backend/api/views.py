@@ -4,7 +4,10 @@ from django.conf import settings
 from django.db.models import Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Tag)
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
@@ -14,9 +17,6 @@ from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-
-from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
-                            ShoppingCart, Tag)
 from users.models import CustomUser, Follow
 
 from .filters import RecipeFilterSet
@@ -98,12 +98,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 recipe__in=recipes_id
                 ).aggregate(total_amount=Sum('amount'))["total_amount"]
 
-            lines.append(ingredient.name)
-            lines.append(str(amount))
-            lines.append(" ")
             lines.append(
-                f'''{ingredient.name} ({ingredient.measurement_unit})
-                 – {str(amount)}'''
+                f'{ingredient.name} ({ingredient.measurement_unit}) – {str(amount)}'
                 )
 
         for line in lines:
@@ -249,7 +245,7 @@ class SubscribeListViewSet(viewsets.ModelViewSet, PageNumberPagination):
 
     def list(self, request, *args, **kwargs):
         user = self.request.user
-        subscriptions = Follow.objects.filter(user=user)
+        subscriptions = user.follower.all()
         page = self.paginate_queryset(subscriptions)
         serializer = FollowSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
