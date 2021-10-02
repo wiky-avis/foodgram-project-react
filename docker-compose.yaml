@@ -10,12 +10,12 @@ services:
     restart: always
 
   frontend:
-    build: frontend
+    image: 79452165/foodgram_frontend:latest
     volumes:
       - ./frontend/:/app/result_build/
 
   backend:
-    build: backend
+    image: 79452165/foodgram_backend:latest
     restart: always
     depends_on:
       - db
