@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.utils.html import format_html
-
 from users.models import Follow
 
 from .models import Ingredient, IngredientAmount, Recipe, Tag

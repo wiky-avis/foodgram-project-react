@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404
-
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
-                            ShoppingCart, Tag, TagRecipe)
-from rest_framework import serializers, status
+
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
+
+from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Tag, TagRecipe,)
 from users.models import CustomUser, Follow
 
 

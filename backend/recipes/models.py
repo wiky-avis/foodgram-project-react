@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from users.models import CustomUser
 
 
@@ -59,7 +58,6 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         upload_to='image/',
-        null=False,
         verbose_name='Изображение',
     )
     text = models.TextField(
