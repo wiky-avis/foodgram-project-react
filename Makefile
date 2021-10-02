@@ -29,4 +29,4 @@ down:
 	docker-compose down
 
 loaddata_fixtures:
-	docker-compose exec backend python manage.py loaddata data/fixtures.json
+	docker-compose exec backend python manage.py load_data

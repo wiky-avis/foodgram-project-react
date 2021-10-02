@@ -70,6 +70,13 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': os.environ['DB_ENGINE'],
@@ -147,7 +154,8 @@ DJOSER = {
     },
 }
 
-FIXTURE_DIRS = os.path.join(BASE_DIR, "data")
+LOAD_URL = '/data/'
+LOAD_ROOT = os.path.join(BASE_DIR, 'data')
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
