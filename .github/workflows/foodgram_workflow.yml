@@ -80,7 +80,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
             sudo docker-compose stop
-            sudo docker-compose rm web
+            sudo docker-compose rm backend
             touch backend/.env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> backend/.env
             echo DEBUG=${{ secrets.DEBUG }} >> backend/.env
