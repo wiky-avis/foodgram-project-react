@@ -77,9 +77,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         buf = io.BytesIO()
         c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
         pdfmetrics.registerFont(
-            TTFont(
-                'FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf'
-            )
+            TTFont('FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf')
             )
         textob = c.beginText()
         textob.setTextOrigin(inch, inch)
