@@ -77,7 +77,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         buf = io.BytesIO()
         c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
         pdfmetrics.registerFont(
-            TTFont('FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf')
+            TTFont(
+                'FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf'
+            )
             )
         textob = c.beginText()
         textob.setTextOrigin(inch, inch)
@@ -99,7 +101,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 ).aggregate(total_amount=Sum('amount'))["total_amount"]
 
             lines.append(
-                f'{ingredient.name} ({ingredient.measurement_unit}) – {str(amount)}'
+                f'{ingredient.name} ({ingredient.measurement_unit})' +
+                f' – {str(amount)}'
                 )
 
         for line in lines:
