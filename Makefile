@@ -19,12 +19,6 @@ static:
 createsuperuser:
 	docker-compose exec backend python manage.py createsuperuser
 
-dumpdata:
-	docker-compose exec backend python manage.py dumpdata > fixtures.json
-
-loaddata:
-	docker-compose exec backend python manage.py loaddata fixtures.json
-
 down:
 	docker-compose down
 
