@@ -26,25 +26,25 @@ Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser
 
 Запустите docker-compose:
 
-  `docker-compose up -d --build`
+  `make build`
 
-Создайте и применените миграции базы данных:
+Применените миграции базы данных:
 
-  `docker-compose exec web python manage.py migrate --noinput`
+  `make migrate`
 
 Сбор статических файлов:
 
-  `docker-compose exec web python manage.py collectstatic --no-input`
+  `make static`
   
 Проект запущен и доступен по адресу [http://localhost/](http://localhost/).
 
 Создаем суперпользователя:
 
-  `docker-compose exec web python manage.py createsuperuser`
+  `make createsuperuser`
 
 Заполнения базы начальными данными:
 
-  `docker-compose exec web python manage.py loaddata fixtures.json`
+  `make loaddata`
 
 Остановить все запущенные контейнеры:
 

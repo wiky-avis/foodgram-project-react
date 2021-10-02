@@ -24,3 +24,9 @@ dumpdata:
 
 loaddata:
 	docker-compose exec backend python manage.py loaddata fixtures.json
+
+down:
+	docker-compose down
+
+loaddata_fixtures:
+	docker-compose exec backend python manage.py loaddata data/fixtures.json
