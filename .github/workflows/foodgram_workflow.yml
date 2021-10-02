@@ -102,4 +102,3 @@ jobs:
             sudo docker-compose up -d --build
             sudo docker-compose exec -T backend python manage.py migrate --noinput
             sudo docker-compose exec -T backend python manage.py collectstatic --no-input
-            sudo docker-compose exec -T backend python manage.py loaddata data/fixtures.json
