@@ -18,7 +18,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r backend/requirements.txt
-    - name: Test with flake8 and pytest
+    - name: Test with flake8
       run: |
         cd backend/
         python -m flake8
@@ -82,17 +82,17 @@ jobs:
             sudo docker-compose stop
             sudo docker-compose rm backend
             sudo docker-compose rm frontend
-            touch backend/.env
-            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> backend/.env
-            echo DEBUG=${{ secrets.DEBUG }} >> backend/.env
-            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> backend/.env
-            echo EMAIL_ADMIN=${{ secrets.EMAIL_ADMIN }} >> backend/.env
-            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> backend/.env
-            echo DB_NAME=${{ secrets.DB_NAME }} >> backend/.env
-            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> backend/.env
-            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> backend/.env
-            echo DB_HOST=${{ secrets.DB_HOST }} >> backend/.env
-            echo DB_PORT=${{ secrets.DB_PORT }} >> backend/.env
+            touch .env
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+            echo DEBUG=${{ secrets.DEBUG }} >> .env
+            echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+            echo EMAIL_ADMIN=${{ secrets.EMAIL_ADMIN }} >> .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose up -d --build
             sudo docker-compose exec -T web python manage.py migrate --noinput
             sudo docker-compose exec -T web python manage.py collectstatic --no-input
