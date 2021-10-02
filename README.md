@@ -47,3 +47,6 @@ Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser
 Остановить все запущенные контейнеры:
 
   `docker-compose down`
+
+## Автор:
+[Аксентий Виктория](https://github.com/wiky-avis)
