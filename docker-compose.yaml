@@ -9,13 +9,6 @@ services:
       - backend/.env
     restart: always
 
-  frontend:
-    image: 79452165/foodgram_frontend:latest
-    volumes:
-      - ./frontend/:/app/result_build/
-    depends_on:
-      - backend
-
   backend:
     image: 79452165/foodgram_backend:latest
     restart: always
@@ -26,6 +19,13 @@ services:
       - media_value:/code/media/
     env_file:
     - backend/.env
+
+  frontend:
+    image: 79452165/foodgram_frontend:latest
+    volumes:
+      - ./frontend/:/app/result_build/
+    depends_on:
+      - backend
 
   nginx:
     image: nginx:1.19.3
