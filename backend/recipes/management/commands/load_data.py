@@ -10,7 +10,6 @@ from recipes.models import Ingredient
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        #import ipdb; ipdb.set_trace()
         os.chdir(LOAD_ROOT)
         for file in os.listdir("."):
             with open(file, 'r', encoding='utf-8') as f:
