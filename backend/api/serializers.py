@@ -164,7 +164,20 @@ class RecipeSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tagrecipe_set')
         ingredients = validated_data.pop('ingredientamount_set')
         recipe = Recipe.objects.create(**validated_data)
-        self.create_recipe_ingredient_and_tag(ingredients, tags, recipe)
+        for tag in tags:
+            current_tag = get_object_or_404(Tag, id=tag.get('tag').get('id'))
+            TagRecipe.objects.create(
+                tag=current_tag, recipe=recipe)
+        for ingredient in ingredients:
+            current_ingredient = get_object_or_404(
+                Ingredient,
+                id=ingredient.get('ingredient').get('id')
+            )
+            IngredientAmount.objects.create(
+                ingredient=current_ingredient,
+                recipe=recipe,
+                amount=ingredient.get('amount')
+            )
         return recipe
 
     def update(self, instance, validated_data):
@@ -181,7 +194,20 @@ class RecipeSerializer(serializers.ModelSerializer):
             recipe_id=instance.id
             )
         recipe_tags.delete()
-        self.create_recipe_ingredient_and_tag(ingredients, tags, recipe)
+        for tag in tags:
+            current_tag = get_object_or_404(Tag, id=tag.get('tag').get('id'))
+            TagRecipe.objects.create(
+                tag=current_tag, recipe=recipe)
+        for ingredient in ingredients:
+            current_ingredient = get_object_or_404(
+                Ingredient,
+                id=ingredient.get('ingredient').get('id')
+            )
+            IngredientAmount.objects.create(
+                ingredient=current_ingredient,
+                recipe=recipe,
+                amount=ingredient.get('amount')
+            )
         return recipe
 
 
