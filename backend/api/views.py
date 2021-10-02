@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag,)
 from users.models import CustomUser, Follow
+
 from .filters import RecipeFilterSet
 from .permissions import IsAdmin, IsAuthorOrAdmin, IsSuperuser
 from .serializers import (FavoriteCreateSerializer, FavoriteSerializer,
@@ -75,9 +76,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def download_shopping_cart(self, request):
         buf = io.BytesIO()
         c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-        pdfmetrics.registerFont(TTFont(
-            'FreeSans',
-            settings.STATIC_ROOT+'/FreeSans.ttf')
+        pdfmetrics.registerFont(
+            TTFont('FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf')
             )
         textob = c.beginText()
         textob.setTextOrigin(inch, inch)
