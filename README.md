@@ -22,9 +22,11 @@ Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser
 
   `git clone https://github.com/wiky-avis/foodgram-project-react.git`
 
+В папке backend необходимо создать файл .env и заполнить переменные окружения.
+
 Запустите docker-compose:
 
-  `docker-compose up -d`
+  `docker-compose up -d --build`
 
 Создайте и применените миграции базы данных:
 
