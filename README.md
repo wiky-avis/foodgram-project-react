@@ -2,6 +2,8 @@
 
 ![example workflow](https://github.com/wiky-avis/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
+Ip-адрес сервера, на котором запущено приложение [84.252.138.212](http://84.252.138.212/)
+
 ## Стек: 
 Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser.
 
