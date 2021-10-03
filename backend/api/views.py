@@ -1,6 +1,16 @@
+import io
+
+from django.conf import settings
 from django.db.models import Sum
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 
 from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
@@ -10,7 +20,7 @@ from rest_framework.response import Response
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag,)
 from users.models import CustomUser, Follow
-from .filters import RecipeFilterSet
+from .filters import RecipeFilterSet, IngredientsFilter
 from .permissions import IsAdmin, IsAuthorOrAdmin, IsSuperuser
 from .serializers import (FavoriteCreateSerializer, FavoriteSerializer,
                           FollowCreateSerializer, FollowSerializer,
@@ -18,7 +28,6 @@ from .serializers import (FavoriteCreateSerializer, FavoriteSerializer,
                           RecipeSerializer, ShoppingCartCreateSerializer,
                           ShoppingCartSerializer, TagSerializer,
                           UserSerializer,)
-from .utils import download_file_response
 
 
 class UsersViewSet(viewsets.ModelViewSet):
@@ -65,6 +74,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=(permissions.IsAuthenticated,),
         methods=['get', ])
     def download_shopping_cart(self, request):
+        buf = io.BytesIO()
+        c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+        pdfmetrics.registerFont(
+            TTFont('FreeSans', settings.STATIC_ROOT+'/FreeSans.ttf')
+            )
+        textob = c.beginText()
+        textob.setTextOrigin(inch, inch)
+        textob.setFont("FreeSans", 14)
+
         user = request.user
         recipes_id = ShoppingCart.objects.filter(owner=user).values('item')
         ingredients_id = Recipe.objects.filter(
@@ -85,7 +103,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f' – {str(amount)}'
                 )
 
-        return download_file_response(lines, 'shop_list.txt')
+        for line in lines:
+            textob.textLine(line)
+
+        c.drawText(textob)
+        c.showPage()
+        c.save()
+        buf.seek(0)
+
+        return FileResponse(buf, as_attachment=True, filename='shop_list.pdf')
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -113,6 +139,8 @@ class IngredientViewSet(viewsets.ModelViewSet):
     pagination_class = None
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = IngredientsFilter
 
 
 class TagViewSet(viewsets.ModelViewSet):
