@@ -5,7 +5,6 @@ from recipes.models import Favorite, Recipe, ShoppingCart, Tag, Ingredient
 
 
 class RecipeFilterSet(rest_framework.FilterSet):
-
     tags = django_filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',
