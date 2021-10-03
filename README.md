@@ -2,7 +2,7 @@
 
 ![example workflow](https://github.com/wiky-avis/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 
-Ip-адрес сервера, на котором запущено приложение [84.252.138.212](http://84.252.138.212/)
+Ip-адрес сервера, на котором запущено приложение [62.84.121.227](http://62.84.121.227/)
 
 ## Стек: 
 Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser.
@@ -49,6 +49,14 @@ Python 3, Django 3, Django REST Framework, Docker, PostgreSQL, Simple-JWT, Joser
 Остановить все запущенные контейнеры:
 
   `docker-compose down`
+
+
+### Вход на сайт/в админку:
+
+```
+admin@admin.ru
+admin
+```
 
 ## Автор:
 [Аксентий Виктория](https://github.com/wiky-avis)
