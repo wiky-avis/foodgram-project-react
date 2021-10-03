@@ -3,7 +3,7 @@ from django.utils.html import format_html
 
 from users.models import Follow
 
-from .models import Ingredient, IngredientAmount, Recipe, Tag
+from .models import Ingredient, IngredientAmount, Recipe, Tag, TagRecipe
 
 
 @admin.register(Tag)
@@ -33,12 +33,18 @@ class FollowAdmin(admin.ModelAdmin):
     list_filter = ('user', 'author')
 
 
+class RecipeTagsInline(admin.TabularInline):
+    model = TagRecipe
+    min_num = 1
+    extra = 0
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('author', 'name', 'image_tag')
     search_fields = ('user', 'author')
     list_filter = ('author', 'name', 'tags')
-    inlines = [RecipeIngredientInLine]
+    inlines = [RecipeTagsInline, RecipeIngredientInLine]
     readonly_fields = ('image_tag',)
 
     def image_tag(self, instance):

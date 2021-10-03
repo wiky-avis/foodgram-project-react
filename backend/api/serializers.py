@@ -1,8 +1,8 @@
+from django.db.models import F
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
 
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag, TagRecipe,)
@@ -120,28 +120,25 @@ class RecipeSerializer(serializers.ModelSerializer):
     def validate_ingredients(self, data):
         ingredients = self.initial_data.get('ingredients')
         if not ingredients:
-            raise ValidationError('Нужно выбрать минимум 1 ингридиент')
+            raise serializers.ValidationError('Нужно выбрать минимум 1 ингридиент')
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
-                raise ValidationError(
+                raise serializers.ValidationError(
                     'Количество ингридиентов должно быть положительным'
                 )
-        unique_ingredients = set(ingredients)
-        if len(unique_ingredients) != len(ingredients):
-            raise serializers.ValidationError(
-                {'errors': 'Ингредиенты не должны повторяться'}
-            )
         return data
 
     def validate_cooking_time(self, data):
         if data <= 0:
-            raise ValidationError('Минимальное время приготовления 1 мин')
+            raise serializers.ValidationError(
+                'Минимальное время приготовления 1 мин'
+            )
         return data
 
     def validate_tags(self, data):
         tags = self.initial_data.get('tags')
         if not tags:
-            raise ValidationError('Нужно выбрать минимум 1 тег')
+            raise serializers.ValidationError('Нужно выбрать минимум 1 тег')
         return data
 
     def create_recipe_ingredient_and_tag(self, ingredients, tags, recipe):
@@ -154,10 +151,15 @@ class RecipeSerializer(serializers.ModelSerializer):
                 Ingredient,
                 id=ingredient.get('ingredient').get('id')
             )
-            IngredientAmount.objects.create(
+            amount = ingredient.get('amount')
+            if IngredientAmount.objects.filter(
+                recipe=recipe, ingredient=current_ingredient
+            ).exists():
+                amount += F('amount')
+            IngredientAmount.objects.update_or_create(
                 ingredient=current_ingredient,
                 recipe=recipe,
-                amount=ingredient.get('amount')
+                defaults={'amount': amount}
             )
 
     def create(self, validated_data):
