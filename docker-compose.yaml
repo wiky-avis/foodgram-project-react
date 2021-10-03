@@ -10,7 +10,8 @@ services:
     restart: always
 
   backend:
-    image: 79452165/foodgram_backend:latest
+#    image: 79452165/foodgram_backend:latest
+    build: backend
     restart: always
     depends_on:
       - db
