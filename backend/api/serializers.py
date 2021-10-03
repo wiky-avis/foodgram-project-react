@@ -120,7 +120,9 @@ class RecipeSerializer(serializers.ModelSerializer):
     def validate_ingredients(self, data):
         ingredients = self.initial_data.get('ingredients')
         if not ingredients:
-            raise serializers.ValidationError('Нужно выбрать минимум 1 ингридиент')
+            raise serializers.ValidationError(
+                'Нужно выбрать минимум 1 ингридиент'
+            )
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
                 raise serializers.ValidationError(
