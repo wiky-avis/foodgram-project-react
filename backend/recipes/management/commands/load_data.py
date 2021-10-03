@@ -1,9 +1,8 @@
 import json
 import os
 
-from django.core.management.base import BaseCommand
-
 from config.settings import LOAD_ROOT
+from django.core.management.base import BaseCommand
 from recipes.models import Ingredient
 
 
