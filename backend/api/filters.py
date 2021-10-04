@@ -1,10 +1,11 @@
 import django_filters
 from django_filters import rest_framework
 
-from recipes.models import Favorite, Recipe, ShoppingCart, Tag, Ingredient
+from recipes.models import Favorite, Recipe, ShoppingCart, Tag
 
 
 class RecipeFilterSet(rest_framework.FilterSet):
+
     tags = django_filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',
@@ -34,13 +35,3 @@ class RecipeFilterSet(rest_framework.FilterSet):
         user = self.request.user
         recipes = ShoppingCart.objects.filter(owner=user).values('item')
         return queryset.filter(id__in=recipes)
-
-
-class IngredientsFilter(rest_framework.FilterSet):
-    name = rest_framework.CharFilter(
-        field_name='name', lookup_expr='istartswith'
-    )
-
-    class Meta:
-        model = Ingredient
-        fields = ['name']
