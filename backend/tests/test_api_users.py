@@ -3,7 +3,6 @@ from http import HTTPStatus
 import pytest
 
 from .common import create_users
-from django.contrib.auth import get_user_model
 
 
 class TestApiUser:
