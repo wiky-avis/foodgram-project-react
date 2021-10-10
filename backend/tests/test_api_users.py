@@ -1,8 +1,7 @@
-import pytest
-
-from .common import auth_client, create_tags
-from django.contrib.auth import get_user_model
 from http import HTTPStatus
+
+import pytest
+from rest_framework.test import APIClient
 
 
 class TestApiUser:
@@ -10,7 +9,7 @@ class TestApiUser:
     @pytest.mark.django_db(transaction=True)
     @pytest.mark.parametrize(
         "data, http_status", [
-            ({'email': 'test_user@foodgram.fake', 'password': '1234567'}, HTTPStatus.OK),
+            ({'email': 'test_user@foodgram.fake', 'password': '1234567'}, HTTPStatus.CREATED),
             ({'email': '', 'password': ''}, HTTPStatus.UNAUTHORIZED)
         ]
     )
@@ -26,16 +25,17 @@ class TestApiUser:
             'password': '1234567'
         }
         response = admin_client.post('/api/auth/token/login/', data=data)
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.CREATED
 
     @pytest.mark.django_db(transaction=True)
-    def test_registration_user_and_get_token(self, client):
+    def test_registration_user_and_get_token(self):
+        client = APIClient()
         data = {
             "email": "vpupkin@yandex.ru",
-            "username": "vasya.pupkin",
+            "username": "vasya_pupkin",
             "first_name": "Вася",
             "last_name": "Пупкин",
             "password": "Qwerty123"
         }
-        response = client.post('/api/users/', data=data)
+        response = client.post('/api/users/', data=data, format='json')
         assert response.status_code == HTTPStatus.CREATED
