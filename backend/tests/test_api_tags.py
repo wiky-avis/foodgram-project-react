@@ -18,16 +18,16 @@ class TestApiTags:
 
         expected = [
             {
-                "id": 1,
-                "name": "Борщ",
-                "color": "#ffffff",
-                "slug": "borsh"
+                'id': 1,
+                'name': 'Борщ',
+                'color': '#ffffff',
+                'slug': 'borsh'
                 },
             {
-                "id": 2,
-                "name": "Суп",
-                "color": "#ff00ff",
-                "slug": "sup"
+                'id': 2,
+                'name': 'Суп',
+                'color': '#ff00ff',
+                'slug': 'sup'
                 }
             ]
         assert data == expected

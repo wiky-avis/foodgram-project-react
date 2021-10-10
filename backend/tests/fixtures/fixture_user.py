@@ -2,6 +2,12 @@ import pytest
 
 
 @pytest.fixture
+def api_client():
+   from rest_framework.test import APIClient
+   return APIClient()
+
+
+@pytest.fixture
 def admin(django_user_model):
     return django_user_model.objects.create_superuser(
         username='AdminUser', email='admin@foodgram.fake', password='1234567'

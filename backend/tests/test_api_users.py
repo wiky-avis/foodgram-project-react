@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import pytest
-from rest_framework.test import APIClient
 
 
 class TestApiUser:
@@ -28,14 +27,22 @@ class TestApiUser:
         assert response.status_code == HTTPStatus.CREATED
 
     @pytest.mark.django_db(transaction=True)
-    def test_registration_user_and_get_token(self):
-        client = APIClient()
+    @pytest.mark.parametrize(
+        'email, username, first_name, last_name, password, status_code', [
+            (None, None, None, None, None, HTTPStatus.BAD_REQUEST),
+            ('test1@test.ru', None, None, None, 'user_pass', HTTPStatus.BAD_REQUEST),
+            ('test2@test.ru', 'user_test', 'Anna', None, 'user_pass', HTTPStatus.BAD_REQUEST),
+            ('test3@test.ru', 'user_test2', 'Vasya', 'Pupkin', 'user_pass', HTTPStatus.CREATED)
+            ])
+    def test_registration_user_and_get_token(
+            self, api_client, email, username, first_name, last_name, password, status_code
+    ):
         data = {
-            "email": "vpupkin@yandex.ru",
-            "username": "vasya_pupkin",
-            "first_name": "Вася",
-            "last_name": "Пупкин",
-            "password": "Qwerty123"
+            'email': email,
+            'username': username,
+            'first_name': first_name,
+            'last_name': last_name,
+            'password': password
         }
-        response = client.post('/api/users/', data=data, format='json')
-        assert response.status_code == HTTPStatus.CREATED
+        response = api_client.post('/api/users/', data=data, format='json')
+        assert response.status_code == status_code
