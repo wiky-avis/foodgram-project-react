@@ -1,11 +1,9 @@
 from django.db.models import F
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
-
-from rest_framework import serializers
-
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag, TagRecipe,)
+from rest_framework import serializers
 from users.models import CustomUser, Follow
 
 

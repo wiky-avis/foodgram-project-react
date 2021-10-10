@@ -13,6 +13,7 @@ gunicorn
 idna
 markdown
 pyparsing
+pytest
 pytest-django
 pytz
 psycopg2-binary==2.9.1
