@@ -5,31 +5,7 @@ from django.contrib.auth import get_user_model
 from http import HTTPStatus
 
 
-class TestApiTags:
-
-    @pytest.mark.django_db(transaction=True)
-    def test_list_tags(self, user_client, admin):
-        create_tags(user_client)
-
-        response = user_client.get('/api/tags/')
-        assert response.status_code == 200
-        data = response.json()
-
-        expected = [
-            {
-                "id": 1,
-                "name": "Борщ",
-                "color": "#ffffff",
-                "slug": "borsh"
-                },
-            {
-                "id": 2,
-                "name": "Суп",
-                "color": "#ff00ff",
-                "slug": "sup"
-                }
-            ]
-        assert data == expected
+class TestApiUser:
 
     @pytest.mark.django_db(transaction=True)
     @pytest.mark.parametrize(
