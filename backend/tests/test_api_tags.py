@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import pytest
-from django.contrib.auth import get_user_model
 
 from .common import auth_client, create_tags
 

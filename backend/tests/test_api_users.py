@@ -2,6 +2,9 @@ from http import HTTPStatus
 
 import pytest
 
+from .common import create_users
+from django.contrib.auth import get_user_model
+
 
 class TestApiUser:
 
@@ -25,6 +28,38 @@ class TestApiUser:
         }
         response = api_client.post('/api/users/', data=data, format='json')
         assert response.status_code == status_code
+
+    @pytest.mark.django_db(transaction=True)
+    def test_get_list_users(self, api_client, django_user_model):
+        create_users(django_user_model)
+
+        response = api_client.get('/api/users/')
+        assert response.status_code == HTTPStatus.OK
+        data = response.json()
+
+        expected = {
+            'count': 2,
+            'next': None,
+            'previous': None,
+            'results': [
+                {
+                    'id': 2,
+                    'email': 'vgaksentii@test.ru',
+                    'username': 'vg',
+                    'first_name': 'Victoria',
+                    'last_name': 'Axentii'
+                },
+                {
+                    'id': 1,
+                    'email': 'vpupkin@yandex.ru',
+                    'username': 'vasya.pupkin',
+                    'first_name': 'Вася',
+                    'last_name': 'Пупкин'
+                }
+            ]
+        }
+        assert data == expected
+
 
     @pytest.mark.django_db(transaction=True)
     @pytest.mark.parametrize(
