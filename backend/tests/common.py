@@ -1,13 +1,4 @@
 from recipes.models import Tag
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIClient
-
-
-def auth_client(user):
-    token = Token.objects.get_or_create(user)
-    client = APIClient()
-    client.credentials(HTTP_AUTHORIZATION=f'Authorization: Token {token.key}')
-    return client
 
 
 def create_users(django_user_model):

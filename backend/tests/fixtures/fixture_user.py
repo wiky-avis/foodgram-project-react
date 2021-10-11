@@ -37,7 +37,7 @@ def admin_client(token_admin):
 @pytest.fixture
 def auth_user(django_user_model):
     return django_user_model.objects.create_user(
-        username='TestUser', email='test_user@foodgram.fake', password='1234567'
+        username='TestUser', email='test_user@foodgram.fake', last_name='', first_name='', password='1234567'
     )
 
 

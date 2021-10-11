@@ -85,3 +85,8 @@ class TestApiUser:
             'auth_token': token_admin['auth_token']
         }
         assert token_admin == expected
+
+    @pytest.mark.django_db(transaction=True)
+    def test_api_users_me(self, user_client):
+        response = user_client.get('/api/users/me/')
+        assert response.status_code == HTTPStatus.OK
