@@ -59,7 +59,6 @@ class TestApiUser:
         }
         assert data == expected
 
-
     @pytest.mark.django_db(transaction=True)
     @pytest.mark.parametrize(
         "data, http_status", [
@@ -70,7 +69,6 @@ class TestApiUser:
     def test_users_get_token(self, user_client, data, http_status):
         response = user_client.post('/api/auth/token/login/', data=data)
         assert response.status_code == http_status
-
 
     @pytest.mark.django_db(transaction=True)
     def test_admin_get_token(self, admin_client, token_admin):
@@ -87,6 +85,38 @@ class TestApiUser:
         assert token_admin == expected
 
     @pytest.mark.django_db(transaction=True)
-    def test_api_users_me(self, user_client):
-        response = user_client.get('/api/users/me/')
-        assert response.status_code == HTTPStatus.OK
+    @pytest.mark.parametrize(
+        'url, http_status', [
+            ('/api/users/me/', HTTPStatus.OK),
+            ('/api/users/1/', HTTPStatus.OK),
+            ('/api/users/333/', HTTPStatus.NOT_FOUND)
+        ]
+    )
+    def test_get_api_users_me_and_users_id_for_auth_user(self, user_client, url, http_status):
+        response = user_client.get(url)
+        assert response.status_code == http_status
+
+    @pytest.mark.django_db(transaction=True)
+    @pytest.mark.parametrize(
+        'url, http_status', [
+            ('/api/users/me/', HTTPStatus.UNAUTHORIZED),
+            ('/api/users/1/', HTTPStatus.UNAUTHORIZED),
+        ]
+    )
+    def test_get_api_users_me_and_users_id_for_guest_user(self, api_client, url, http_status):
+        response = api_client.get(url)
+        assert response.status_code == http_status
+
+    @pytest.mark.django_db(transaction=True)
+    def test_users_set_password(self, user_client, auth_user):
+        data = {
+            "new_password": "password123",
+            "current_password": {auth_user.password}
+        }
+        response = user_client.post('/api/users/set_password/', data, format='json')
+        assert response.status_code == HTTPStatus.CREATED
+
+    @pytest.mark.django_db(transaction=True)
+    def test_user_logout(self, user_client, auth_user):
+        response = user_client.post('/api/auth/token/logout/')
+        assert response.status_code == HTTPStatus.CREATED
