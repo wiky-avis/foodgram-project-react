@@ -15,7 +15,7 @@ def admin(django_user_model):
 
 
 @pytest.fixture
-def token(admin):
+def token_admin(admin):
     from rest_framework.authtoken.models import Token
 
     token, errors = Token.objects.get_or_create(user=admin)
@@ -26,11 +26,11 @@ def token(admin):
 
 
 @pytest.fixture
-def admin_client(token):
+def admin_client(token_admin):
     from rest_framework.test import APIClient
 
     client = APIClient()
-    client.credentials(HTTP_AUTHORIZATION=f'Authorization: Token {token["auth_token"]}')
+    client.credentials(HTTP_AUTHORIZATION=f'Authorization: Token {token_admin["auth_token"]}')
     return client
 
 

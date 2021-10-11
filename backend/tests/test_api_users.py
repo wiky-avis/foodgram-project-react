@@ -63,20 +63,25 @@ class TestApiUser:
     @pytest.mark.django_db(transaction=True)
     @pytest.mark.parametrize(
         "data, http_status", [
-            ({'email': 'test_user@foodgram.fake', 'password': '1234567'}, HTTPStatus.CREATED),
-            ({'email': None, 'password': None}, HTTPStatus.UNAUTHORIZED)
+            ({'email': 'test_user@foodgram.fake', 'password': '1234567'}, HTTPStatus.OK),
+            ({'email': 'test@test.ru', 'password': 'password'}, HTTPStatus.BAD_REQUEST)
         ]
     )
     def test_users_get_token(self, user_client, data, http_status):
-        data = data
         response = user_client.post('/api/auth/token/login/', data=data)
         assert response.status_code == http_status
 
+
     @pytest.mark.django_db(transaction=True)
-    def test_admin_get_token(self, admin_client, admin):
+    def test_admin_get_token(self, admin_client, token_admin):
         data = {
             'email': 'admin@foodgram.fake',
             'password': '1234567'
         }
         response = admin_client.post('/api/auth/token/login/', data=data)
-        assert response.status_code == HTTPStatus.CREATED
+        assert response.status_code == HTTPStatus.OK
+
+        expected = {
+            'auth_token': token_admin['auth_token']
+        }
+        assert token_admin == expected
